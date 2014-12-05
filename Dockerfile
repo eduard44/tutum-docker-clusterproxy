@@ -19,6 +19,9 @@ RUN chmod 755 /*.sh
 ADD conf/haproxy.cfg.json /etc/haproxy/haproxy.cfg.json
 ADD conf/haproxy.cfg.json /etc/haproxy/empty_haproxy.cfg.json
 
+# Download AWS tools
+RUN pip install awscli
+
 # PORT to load balance and to expose (also update the EXPOSE directive below)
 ENV PORT 80
 
@@ -38,7 +41,11 @@ ENV OPTIONS redispatch
 ENV TIMEOUTS connect 5000,client 50000,server 50000
 
 # SSL certificate to use (optional)
-ENV SSL_CERT **None**
+ENV S3_SSL_CERT_FILE s3://my-bucket/mycert.pem
+
+# Setup AWS environment variables
+ENV AWS_ACCESS_KEY_ID mykey
+ENV AWS_SECRET_ACCESS_KEY mysecret
 
 EXPOSE 80
 CMD ["/run.sh"]
