@@ -14,7 +14,7 @@
             "bind 0.0.0.0:80",
             "redirect scheme https code 301 if !{ ssl_fc }",
             "bind 0.0.0.0:443 $SSL",
-            "default_backend cluster",
+            "default_backend cluster"
         ]
     },
     "backend": {
