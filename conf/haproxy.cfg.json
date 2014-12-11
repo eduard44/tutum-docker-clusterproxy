@@ -14,7 +14,9 @@
             "bind 0.0.0.0:80",
             "redirect scheme https code 301 if !{ ssl_fc }",
             "bind 0.0.0.0:443 $SSL",
-            "default_backend cluster"
+            "default_backend cluster",
+            "reqadd X-Forwarded-Proto:\ https:",
+            "rspadd Strict-Transport-Security:\ max-age=31536000;\ includeSubDomains if { sslfc }"
         ]
     },
     "backend": {
