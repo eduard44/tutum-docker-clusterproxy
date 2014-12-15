@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ "${VIRTUAL_HOST}" = "**None**" ]; then
+    unset VIRTUAL_HOST
+fi
+
+if [ "${SSL_CERT}" = "**None**" ]; then
+    unset SSL_CERT
+fi
+
 if [ "${S3_SSL_CERT_FILE}" = "**None**" ]; then
     unset S3_SSL_CERT_FILE
 fi
@@ -15,7 +23,7 @@ if [ -n "$S3_SSL_CERT_FILE" ]; then
 
     export SSL="ssl crt /servercert.pem"
 else
-    echo "No SSL certificate provided"
+    echo "No SSL certificate, running HAProxy in http mode"
 fi
 
-exec python /main.py
+exec python /haproxy.py 
