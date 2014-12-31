@@ -34,6 +34,8 @@ You can overwrite the following HAproxy configuration options:
 * `SSL_CERT` (default: `**None**`): An optional certificate to use on the binded port. It should have both the private and public keys content. If using it for HTTPS, remember to also set `PORT=443` as the port is not changed by this setting.
 * `VIRTUAL_HOST` (default: `**None**`): Optional. Let HAProxy route by domain name. Format `LINK_ALIAS=DOMAIN`, comma separated.
 
+Check [the HAproxy configuration manual](http://haproxy.1wt.eu/download/1.4/doc/configuration.txt) for more information on the above.
+
 Fork-specific variables:
 * `AWS_CLIENT_KEY_ID`: The AWS client ID
 * `AWS_ACCESS_ACCESS_KEY`: The AWS client secret
@@ -78,3 +80,12 @@ How to use this container
     Notice that the format of VIRTUAL_HOST is `LINK_ALIAS=DOMAIN`, where LINK_ALIAS must match the link alias.
 
     In the example above, when you access http://www.hello1.com, it will show the service running in container hello1, and http://www.hello2.com will go to container hello2
+
+    *Alternatively*, virtual host can be configured by reading reading linked services environment variables(`VIRTUAL_HOST`). Here is an example:
+    
+    ```
+    docker run -d -e VIRTUAL_HOST=www.hello1.com --name hello1 tutum/hello-world
+    docker run -d -e VIRTUAL_HOST=www.hello2.com --name hello2 tutum/hello-world 
+    docker run -d --link hello1:hello1 --link hello2:hello2 -p 80:80 haproxy
+    ```
+    
