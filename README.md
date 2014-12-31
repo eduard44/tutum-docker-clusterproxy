@@ -4,6 +4,8 @@ tutum-docker-clusterproxy
 HAproxy image that balances between linked containers and, if launched in Tutum, 
 reconfigures itself when a linked cluster member joins or leaves
 
+**Fork notes:**
+This fork is modified to download the SSL certificate file from S3 rather than using an environment variable. The environment variables required are explained below.
 
 Usage
 -----
@@ -32,7 +34,10 @@ You can overwrite the following HAproxy configuration options:
 * `SSL_CERT` (default: `**None**`): An optional certificate to use on the binded port. It should have both the private and public keys content. If using it for HTTPS, remember to also set `PORT=443` as the port is not changed by this setting.
 * `VIRTUAL_HOST` (default: `**None**`): Optional. Let HAProxy route by domain name. Format `LINK_ALIAS=DOMAIN`, comma separated.
 
-Check [the HAproxy configuration manual](http://haproxy.1wt.eu/download/1.4/doc/configuration.txt) for more information on the above.
+Fork-specific variables:
+* `AWS_CLIENT_KEY_ID`: The AWS client ID
+* `AWS_ACCESS_ACCESS_KEY`: The AWS client secret
+* `S3_SSL_CERT_FILE`: Path to the pem file on S3. It must be in AWS CLI format: `s3://mybucket/mycert.pem`
 
 
 Usage within Tutum

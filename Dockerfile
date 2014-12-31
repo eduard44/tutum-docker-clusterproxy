@@ -11,6 +11,9 @@ RUN echo 'deb http://ppa.launchpad.net/vbernat/haproxy-1.5/ubuntu trusty main' >
     pip install requests==2.2.1 && \
     rm -rf /var/lib/apt/lists/*
 
+# Download AWS tools
+RUN pip install awscli
+
 # PORT to load balance and to expose (also update the EXPOSE directive below)
 ENV PORT 80
 
@@ -33,7 +36,11 @@ ENV TIMEOUT connect 5000, client 50000, server 50000
 ENV VIRTUAL_HOST **None**
 
 # SSL certificate to use (optional)
-ENV SSL_CERT **None**
+ENV S3_SSL_CERT_FILE s3://my-bucket/mycert.pem
+
+# Setup AWS environment variables
+ENV AWS_ACCESS_KEY_ID mykey
+ENV AWS_SECRET_ACCESS_KEY mysecret
 
 # Add scripts
 ADD haproxy.py /haproxy.py
